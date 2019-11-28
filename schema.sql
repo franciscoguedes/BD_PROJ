@@ -1,3 +1,16 @@
+drop table local_publico cascade;
+drop table item cascade;
+drop table anomalia cascade;
+drop table anomalia_redacao cascade;
+drop table duplicado cascade;
+drop table utilizador cascade;
+drop table utilizador_certificado cascade;
+drop table utilizador_regular cascade;
+drop table incidencia cascade;
+drop table proposta_de_correcao cascade;
+drop table correcao cascade;
+
+
 create table local_publico(
     latitude numeric(9,6),
     longitude numeric(8,6),
