@@ -4,9 +4,13 @@
     try
     {
         $host = "db.ist.utl.pt";
-        $user ="ist190701";
-        $password = "xxxxxxx";
+        $user ="ist190716";
+        $password = "dfud2820";
         $dbname = $user;
+
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $input = $_REQUEST['IPcorreção'];
 
@@ -18,7 +22,7 @@
         $sql = "INSERT INTO proposta_de_correcao VALUES (:email, :nro, :data_hota, :texto);";
 
         $result = $db->prepare($sql);
-        $result->execute([':email' => $email, ':nro' => $numero, ':nome' => $nome]);
+        $result->execute([':email' => $email, ':nro' => $numero, ':data_hora' => $data_hora, ':texto' => $texto]);
     
         $db = null;
     }

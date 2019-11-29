@@ -1,14 +1,35 @@
+<html>
+    <body>
 <?php
+    try
+    {
+        $host = "db.ist.utl.pt";
+        $user ="ist190716";
+        $password = "dfud2820";
+        $dbname = $user;
 
-    include_once 'connect.php';
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    $input = $_POST['EPcorreção'];
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    list($email, $numero, $data_hora, $texto) = explode(",", $input);
+        $input = $_REQUEST['EPcorreção'];
 
-    $sql = "UPDATE proposta_de_correcao SET texto='$texto' WHERE email='$email' AND nro='$numero';";
-
-    mysqli_query($conn, $sql);
+        list($email, $numero, $data_hora, $texto) = explode(",", $input);
     
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "UPDATE proposta_de_correcao SET :texto AND :data_hora WHERE :email AND nro;";
 
-    header("Location: proj1.php");
+        $result = $db->prepare($sql);
+        $result->execute([':texto' => $texto,':data_hora' => $data_hora, ':email' => $email, ':nro' => $numero]);
+    
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo("<p>ERROR: {$e->getMessage()}</p>");
+    }
+?>
+    </body>
+</html>

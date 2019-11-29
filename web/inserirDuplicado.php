@@ -1,12 +1,35 @@
+<html>
+    <body>
 <?php
-    include_once 'connect.php';
+    try
+    {
+        $host = "db.ist.utl.pt";
+        $user ="ist190716";
+        $password = "dfud2820";
+        $dbname = $user;
 
-    $input = $_Post['Iduplicado'];
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    list($item1, $item2) = explode(",", $input);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "INSERT INTO duplicado (item1, item2) VALUES ('$item1', '$item2');";
+        $input = $_REQUEST['Iduplicado'];
 
-    mysql_query($conn, $sql);
+        list($item1, $item2) = explode(",", $input);
+    
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "INSERT INTO duplicado VALUES (:item1, :item2);";
 
-    header("Location: proj1.php");
+        $result = $db->prepare($sql);
+        $result->execute([':item1' => $item1, ':item2' => $item2]);
+    
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo("<p>ERROR: {$e->getMessage()}</p>");
+    }
+?>
+    </body>
+</html>

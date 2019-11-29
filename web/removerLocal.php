@@ -1,12 +1,34 @@
+<html>
+    <body>
 <?php
-    include_once 'connect.php';
+    try
+    {
+        $host = "db.ist.utl.pt";
+        $user ="ist190716";
+        $password = "dfud2820";
+        $dbname = $user;
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    $input = $_POST['Rlocal'];
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    list($latitude, $longitude) = explode(",", $input);
+        $input = $_REQUEST['Rlocal'];
 
-    $sql = "DELETE FROM local_publico WHERE latitude='$latitude' AND longitude='$longitude';";
+        list($latitude, $longitude) = explode(",", $input);
+    
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "DELETE FROM local_publico WHERE :latitude AND :longitude;";
 
-    mysqli_query($conn, $sql);
-
-    header("Location: proj1.php");
+        $result = $db->prepare($sql);
+        $result->execute([':latitude' => $latitude, ':longitude' => $longitude]);
+    
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo("<p>ERROR: {$e->getMessage()}</p>");
+    }
+?>
+    </body>
+</html>
