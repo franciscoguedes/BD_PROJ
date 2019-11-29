@@ -1,7 +1,7 @@
 drop table local_publico cascade;
 drop table item cascade;
 drop table anomalia cascade;
-drop table anomalia_redacao cascade;
+drop table anomalia_traducao cascade;
 drop table duplicado cascade;
 drop table utilizador cascade;
 drop table utilizador_certificado cascade;
@@ -16,7 +16,7 @@ create table local_publico(
     longitude numeric(8,6),
     nome varchar(80) not null,
 
-    constraint pk_local_publico primary key(latitude, longitude));
+    primary key(latitude, longitude));
 
 
 create table item(
@@ -26,54 +26,57 @@ create table item(
     latitude numeric(9,6),
     longitude numeric(8,6),
 
-    constraint pk_item primary key(id),
-    constraint fk_item_local_publico foreign key(latitude, longitude)
+    primary key(id),
+    foreign key(latitude, longitude)
         references local_publico(latitude, longitude));
 
 create table anomalia(
     id integer,
-    zona box not null,
+    zona varchar(80) not null,
     imagem text not null,
     lingua char(3) not null,
     ts timestamp not null,
     descricao text not null,
     tem_anomalia_redacao boolean not null,
 
-    constraint pk_anomalia primary key(id));
+    primary key(id));
 
-create table anomalia_redacao(
+create table anomalia_traducao(
     id integer,
-    zona2 box not null,
+    zona2 varchar(80) not null,
     lingua2 char(3) not null,
 
-    constraint pk_anomalia_redacao primary key(id));
+    primary key(id),
+    foreign key (id)
+        references anomalia(id));
 
 create table duplicado(
     item1 integer not null,
     item2 integer not null,
 
-    constraint fk_duplicado_item foreign key(item1)
+    check (item1 < item2),
+    primary key(item1, item2),
+    foreign key(item1)
         references item(id),
-    constraint fk_duplicado_item foreign key(item2)
+    foreign key(item2)
         references item(id));
 
 create table utilizador(
     email varchar(254),
-    password varchar(80) not null, 
-
-    constraint pk_utilizador primary key(email));
+    pass varchar(80) not null, 
+    primary key(email));
 
 
 create table utilizador_certificado(
     email varchar(254),
-
-    constraint fk_utilizador_certificado_utilizador foreign key(email)
+    primary key (email),
+    foreign key(email)
         references utilizador(email));
 
 create table utilizador_regular(
     email varchar(254),
-
-    constraint fk_utilizador_regular_utilizador foreign key(email)
+    primary key (email),
+    foreign key(email)
         references utilizador(email));
 
 
@@ -82,21 +85,22 @@ create table incidencia (
     item_id integer,
     email varchar(254),
 
-    constraint fk_incidencia_anomalia foreign key(anomalia_id)
+    primary key (anomalia_id),
+      foreign key(anomalia_id)
         references anomalia(id),
-    constraint fk_incidencia_item foreign key(item_id)
+      foreign key(item_id)
         references item(id),
-    constraint fk_incidencia_utilizador foreign key(email)
+      foreign key(email)
         references utilizador(email));
 
 create table proposta_de_correcao(
     email varchar(254),
     nro integer,
-    data_hora datetime not null,
-    texto text not null,
+    data_hora timestamp not null,
+    texto varchar(254) not null,
 
-    constraint pk_proposta_de_correcao primary key(email, nro),
-    constraint fk_proposta_de_correcao_utilizador foreign key(email)
+    primary key(email, nro),
+    foreign key(email)
         references utilizador(email));
 
 create table correcao(
@@ -104,8 +108,15 @@ create table correcao(
     nro integer,
     anomalia_id integer,
 
-    constraint pk_correcao primary key(email, nro, anomalia_id),
-    constraint fk_correcao_utilizador foreign key(email)
+    primary key(email, nro, anomalia_id),
+    foreign key(email)
         references utilizador(email),
-    constraint fk_correcao_incidencia foreign key(anomalia_id)
+    foreign key(nro)
+        references proposta_de_correcao(nro),
+    foreign key(anomalia_id)
         references incidencia(anomalia_id));
+
+
+INSERT INTO local_publico values ('praceta visconde de oliveira do douro', 123, 4430);
+INSERT INTO local_publico values ('vila nova de gaia', 456, 4400);
+SELECT * from local_publico;
