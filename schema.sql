@@ -101,7 +101,7 @@ create table proposta_de_correcao(
 
     primary key(email, nro),
     foreign key(email)
-        references utilizador(email));
+        references utilizador_certificado(email));
 
 create table correcao(
     email varchar(254),
@@ -109,10 +109,8 @@ create table correcao(
     anomalia_id integer,
 
     primary key(email, nro, anomalia_id),
-    foreign key(email)
-        references utilizador(email),
-    foreign key(nro)
-        references proposta_de_correcao(nro),
+    foreign key(email, nro)
+        references proposta_de_correcao(email, nro),
     foreign key(anomalia_id)
         references incidencia(anomalia_id));
 
