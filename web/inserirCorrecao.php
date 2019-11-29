@@ -1,0 +1,31 @@
+<html>
+    <body>
+<?php
+    try
+    {
+        $host = "db.ist.utl.pt";
+        $user ="ist190701";
+        $password = "xxxxxxx";
+        $dbname = $user;
+
+        $input = $_REQUEST['Icorreção'];
+
+        list($email, $numero, $anomalia_id) = explode(",", $input); 
+    
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "INSERT INTO correcao VALUES (:email, :numero, :anomalia_id);";
+    
+        $result = $db->prepare($sql);
+        $result->execute([':email' => $email, ':numero' => $numero, ':anomalia_id' => $anomalia_id]);
+    
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo("<p>ERROR: {$e->getMessage()}</p>");
+    }
+?>
+    </body>
+</html>
