@@ -35,66 +35,39 @@ having count(*) >= all (
 );
 
 select distinct email
-from (
-    incidencia
-    join 
-    anomalia on incidencia.anomalia_id = anomalia.id
-    join
-    item on item.id = incidencia.item_id
-    ) tbl
-where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
-    and latitude > 39.336775
+from (incidencia
+    join anomalia 
+        on incidencia.anomalia_id = anomalia.id
+    join item 
+        on item.id = incidencia.item_id
+    ) t1
+where ts between '2019-01-01 00:00:00' and '2019-12-31 23:59:59' and latitude > 39.336775
     and not exists(
         select latitude, longitude
         from local_publico
         where latitude > 39.336775
         except
         select latitude, longitude
-        from( 
-            incidencia
-            join
-            item on item.id = incidencia.item_id
-            ) t           
-        where latitude > 39.336775
-        and
-        tbl.email = t.email
+        from(incidencia
+            join item 
+                on item.id = incidencia.item_id
+            ) t2         
+        where latitude > 39.336775 and t1.email = t2.email
     );
     
-    
-select distinct email
-from (
-    utilizador_certificado
-    natural join
-    proposta_de_correcao
-    natural join
-    incidencia
-    join
-    anomalia on incidencia.anomalia_id = anomalia.id
-    join
-    item on item.id = incidencia.item_id
-    ) tbl
-where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
-    and latitude < 39.336775
-    and exists(
-        select anomalia_id
-        from incidencia
-            join item on item.id = incidencia.item_id
-        where latitude < 39.336775
-        except
-        select anomalia_id
-        from(
-            utilizador_certificado
-            natural join
-            proposta_de_correcao
-            natural join
-            incidencia
-            join
-            anomalia on incidencia.anomalia_id = anomalia.id
-        ) t
-        where latitude < 39.336775
-        and
-        tbl.email = t.email
-    );
-
-
+select email
+from utilizador_certificado t1
+where exists(
+	select anomalia_id
+	from((utilizador_certificado natural join utilizador 
+		natural join incidencia natural join local_publico) a1 
+		join anomalia on anomalia.id = a1.anomalia_id) a2
+	where a2.latitude < 39.336775 and 
+		a2.ts  between '2019-01-01 00:00:00' and '2019-12-31 23:59:59'
+	except
+	select anomalia_id
+	from (utilizador_certificado natural join utilizador natural join incidencia natural join proposta_de_correcao) t2
+	where t2.email = t1.email 
+)
+group by email;
   
