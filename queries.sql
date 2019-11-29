@@ -63,7 +63,7 @@ where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
     
 select distinct email
 from (
-    utilizador_qualificado
+    utilizador_certificado
     natural join
     proposta_de_correcao
     natural join
@@ -83,7 +83,7 @@ where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
         except
         select anomalia_id
         from(
-            utilizador_qualificado
+            utilizador_certificado
             natural join
             proposta_de_correcao
             natural join
@@ -95,5 +95,6 @@ where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
         and
         tbl.email = t.email
     );
+
 
   
