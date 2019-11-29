@@ -35,12 +35,22 @@ having count(*) >= all (
 );
 
 select distinct email
+<<<<<<< HEAD
 from (incidencia
     join anomalia 
         on incidencia.anomalia_id = anomalia.id
     join item 
         on item.id = incidencia.item_id
     ) t1
+=======
+from (
+    incidencia
+    join 
+    anomalia on incidencia.anomalia_id = anomalia.id
+    join
+    item on item.id = incidencia.item_id
+    ) table1
+>>>>>>> bf30d497cff2ec203a8cae315feac00e01bbdb06
 where ts between '2019-01-01 00:00:00' and '2019-12-31 23:59:59' and latitude > 39.336775
     and not exists(
         select latitude, longitude
@@ -48,6 +58,7 @@ where ts between '2019-01-01 00:00:00' and '2019-12-31 23:59:59' and latitude > 
         where latitude > 39.336775
         except
         select latitude, longitude
+<<<<<<< HEAD
         from(incidencia
             join item 
                 on item.id = incidencia.item_id
@@ -70,4 +81,49 @@ where exists(
 	where t2.email = t1.email 
 )
 group by email;
+=======
+        from( 
+            incidencia
+            join
+            item on item.id = incidencia.item_id
+            ) table2           
+        where latitude > 39.336775
+        and table1.email = table2.email
+    );
+    
+    
+select distinct email
+from (
+    utilizador_certificado
+    natural join
+    proposta_de_correcao
+    natural join
+    incidencia
+    join
+    anomalia on incidencia.anomalia_id = anomalia.id
+    join
+    item on item.id = incidencia.item_id
+    ) table1
+where ts between '2019-01-01 00:00:00' and '2019-12-31 23:59:59' and latitude < 39.336775
+    and exists(
+        select anomalia_id
+        from incidencia
+            join item on item.id = incidencia.item_id
+        where latitude < 39.336775
+        except
+        select anomalia_id
+        from(
+            utilizador_certificado
+            natural join
+            proposta_de_correcao
+            natural join
+            incidencia
+            join
+            anomalia on incidencia.anomalia_id = anomalia.id
+        ) table2
+        where latitude < 39.336775
+        and table1.email = table2.email
+    );
+
+>>>>>>> bf30d497cff2ec203a8cae315feac00e01bbdb06
   
