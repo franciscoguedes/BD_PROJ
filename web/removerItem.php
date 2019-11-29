@@ -1,10 +1,33 @@
+<html>
+    <body>
 <?php
-    include_once 'connect.php';
+    try
+    {
+        $host = "db.ist.utl.pt";
+        $user ="ist190716";
+        $password = "dfud2820";
+        $dbname = $user;
 
-    $input = $_POST['Ritem'];
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    $sql = "DELETE FROM item WHERE id='$input';";
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    mysqli_query($conn, $sql);
-
-    header("Location: proj1.php");
+        $input = $_REQUEST['Ritem'];
+    
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "DELETE FROM item WHERE :id;";
+    
+        $result = $db->prepare($sql);
+        $result->execute([':id' => $input]);
+    
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo("<p>ERROR: {$e->getMessage()}</p>");
+    }
+?>
+    </body>
+</html>

@@ -11,19 +11,25 @@
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $input = $_REQUEST['Ianomalia'];
-
-        list($id, $zona, $imagem, $lingua, $ts, $descrição, $tem_anomalia_redação) = explode(",", $input); 
     
         $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO anomalia VALUES (:id, :zona, :imagem, :lingua, :ts, :descrição, :tem_anomalia_redação);";
-
+        $sql = "SELECT * FROM utilizador;";
     
         $result = $db->prepare($sql);
-        $result->execute([':id' => $id, ':zona' => $zona, ':imagem' => $imagem, ':ts' => $ts, ':descrição' => $descrição, ':tem_anomalia_redação' => $tem_anomalia_redação]);
+        $result->execute();
+    
+        echo ("Users table");
+        echo("<table border=\"0\" cellspacing=\"5\">\n");
+        foreach($result as $row)
+        {
+            echo("<tr>\n");
+            echo("<td>{$row['email']}</td>\n");
+            echo("<td>{$row['pass']}</td>\n");
+            echo("</tr>\n");
+        }
+        echo("</table>\n");
     
         $db = null;
     }
@@ -34,3 +40,4 @@
 ?>
     </body>
 </html>
+        

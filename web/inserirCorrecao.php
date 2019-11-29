@@ -4,9 +4,13 @@
     try
     {
         $host = "db.ist.utl.pt";
-        $user ="ist190701";
-        $password = "xxxxxxx";
+        $user ="ist190716";
+        $password = "dfud2820";
         $dbname = $user;
+
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $input = $_REQUEST['Icorreção'];
 
@@ -15,10 +19,10 @@
         $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO correcao VALUES (:email, :numero, :anomalia_id);";
+        $sql = "INSERT INTO correcao VALUES (:email, :nro, :anomalia_id);";
     
         $result = $db->prepare($sql);
-        $result->execute([':email' => $email, ':numero' => $numero, ':anomalia_id' => $anomalia_id]);
+        $result->execute([':email' => $email, ':nro' => $numero, ':anomalia_id' => $anomalia_id]);
     
         $db = null;
     }

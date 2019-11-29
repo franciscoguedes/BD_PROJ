@@ -1,13 +1,36 @@
+<html>
+    <body>
 <?php
+    try
+    {
+        $host = "db.ist.utl.pt";
+        $user ="ist190716";
+        $password = "dfud2820";
+        $dbname = $user;
 
-    include_once 'connect.php';
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-    $input = $_POST['RPcorreção'];
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    list($email, $numero) = explode(",", $input);
+        $input = $_REQUEST['RPcorreção'];
 
-    $sql = "DELETE FROM proposta_de_correcao WHERE email = '$email' AND nro= '$numero';";
+        list($email, $numero) = explode(",", $input);
+    
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        $sql = "DELETE FROM proposta_de_correcao WHERE :email AND :nro;";
+        
 
-    mysqli_query($conn, $sql);
-
-    header("Location: proj1.php");
+        $result = $db->prepare($sql);
+        $result->execute([':email' => $email, ':nro' => $numero]);
+    
+        $db = null;
+    }
+    catch (PDOException $e)
+    {
+        echo("<p>ERROR: {$e->getMessage()}</p>");
+    }
+?>
+    </body>
+</html>
