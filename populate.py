@@ -38,8 +38,8 @@ zonasImagem = ["cima", "baixo", "esquerda", "meio", "direita"]
 anos = [1999, 2000, 2010, 2019, 2020]
 meses = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 dias = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]
-horas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-minutos = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60]
+horas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+minutos = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59]
 timestamps = []
 images = []
 descricoes = []
@@ -145,10 +145,11 @@ for i in range(100):
 #populate items
 itemsPopulate = "--items\n"
 createdItemIds = []
-for (itemId, latitude, longitude) in zip(itemIds, latitudes, longitudes):
+for itemId in itemIds:
+    coord = coords[randrange(0, len(coords))]
     createdItemIds += [itemId]
     itemsPopulate += "INSERT INTO item values (" + str(itemId) + ", '" + str(descricoes[randrange(0, len(descricoes))]) + "', " + \
-                        "'" + str(cidades[randrange(0, len(cidades))]) + "', " + str(latitude) + ", " + str(longitude) +");\n" 
+                        "'" + str(cidades[randrange(0, len(cidades))]) + "', " + str(coord[0]) + ", " +  str(coord[1])  +");\n" 
 
 itemIds = createdItemIds
 itemsPopulate += "\n"
@@ -189,17 +190,20 @@ for ano in [2021, 2022]:
 #populate proposta correcao
 propostaDeCorrecaoPopulate = "--proposta_de_correcao\n"
 propostaDeCorrecaoIds = []
+propostaDeCorrecaoEmails = []
 for i in range(randrange(1, 15)):
     if i not in propostaDeCorrecaoIds:
         propostaDeCorrecaoIds.append(i)
-        propostaDeCorrecaoPopulate += "INSERT INTO proposta_de_correcao values ('" + emailCertificados[randrange(0, len(emailCertificados))] + "', "  + str(i) + ", " + correctionTimestamps[randrange(0, len(correctionTimestamps))] + ", '" + textos[randrange(0, len(textos))] +"');\n"
+        email = emailCertificados[randrange(0, len(emailCertificados))]
+        propostaDeCorrecaoEmails.append(email)
+        propostaDeCorrecaoPopulate += "INSERT INTO proposta_de_correcao values ('" + email + "', "  + str(i) + ", " + correctionTimestamps[randrange(0, len(correctionTimestamps))] + ", '" + textos[randrange(0, len(textos))] +"');\n"
 
 propostaDeCorrecaoPopulate += "\n"
 result += propostaDeCorrecaoPopulate
 
 #populate correcao
 correcaoPopulate = "--correcao\n"
-for (email, nro) in zip(emailCertificados, propostaDeCorrecaoIds):
+for (email, nro) in zip(propostaDeCorrecaoEmails, propostaDeCorrecaoIds):
     correcaoPopulate += "INSERT INTO correcao values ('" + email + "', " + str(nro) + ", " + str(anomaliaIds[randrange(0, len(anomaliaIds))]) + ");\n"
 
 result += correcaoPopulate 
