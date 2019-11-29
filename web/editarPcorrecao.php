@@ -12,7 +12,7 @@
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $input = $_REQUEST['EPcorreção'];
+        $input = $_REQUEST['EPcorrecao'];
 
         list($email, $numero, $data_hora, $texto) = explode(",", $input);
     

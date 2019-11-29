@@ -14,16 +14,16 @@
 
         $input = $_REQUEST['Ianomalia'];
 
-        list($id, $zona, $imagem, $lingua, $ts, $descrição, $tem_anomalia_redação) = explode(",", $input); 
+        list($id, $zona, $imagem, $lingua, $ts, $descricao, $tem_anomalia_redacao) = explode(",", $input); 
     
         $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO anomalia VALUES (:id, :zona, :imagem, :lingua, :ts, :descrição, :tem_anomalia_redação);";
+        $sql = "INSERT INTO anomalia VALUES (:id, :zona, :imagem, :lingua, :ts, :descricao, :tem_anomalia_redacao);";
 
     
         $result = $db->prepare($sql);
-        $result->execute([':id' => $id, ':zona' => $zona, ':imagem' => $imagem, ':ts' => $ts, ':descrição' => $descrição, ':tem_anomalia_redação' => $tem_anomalia_redação]);
+        $result->execute([':id' => $id, ':zona' => $zona, ':imagem' => $imagem, ':ts' => $ts, ':descricao' => $descricao, ':tem_anomalia_redacao' => $tem_anomalia_redacao]);
     
         $db = null;
     }

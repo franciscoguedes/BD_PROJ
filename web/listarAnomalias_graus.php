@@ -41,8 +41,8 @@
             echo("<td>{$row['imagem']}</td>\n");
             echo("<td>{$row['lingua']}</td>\n");
             echo("<td>{$row['ts']}</td>\n");
-            echo("<td>{$row['descrição']}</td>\n");
-            echo("<td>{$row['tem_anomalia_redação']}</td>\n");
+            echo("<td>{$row['descricao']}</td>\n");
+            echo("<td>{$row['tem_anomalia_redacao']}</td>\n");
             echo("</tr>\n");
         }
         echo("</table>\n");

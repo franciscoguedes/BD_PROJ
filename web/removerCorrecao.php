@@ -12,7 +12,7 @@
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $input = $_REQUEST['Rcorreção'];
+        $input = $_REQUEST['Rcorrecao'];
 
         list($email, $numero, $anomalia_id) = explode(",", $input); 
     

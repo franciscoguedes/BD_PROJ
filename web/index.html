@@ -2,7 +2,7 @@
     <head>
     </head>
     <body>
-        <h1>Instruções</h1>
+        <h1>Instrucoes</h1>
         <p1>-> Inserir e remover Locais, Itens, anomalias</br></br></p1>
             <div class="grid1">
                 <div class="grid1-inserir">
@@ -31,30 +31,30 @@
                 </div>
             </div>
         </br></br></br>
-        <p2>->Inserir, editar e remover correcções e propostas de correcção</br></br></p2>
+        <p2>->Inserir, editar e remover correcoes e propostas de correcao</br></br></p2>
             <div class="grid2">
                 <div class="grid2-inserir">
                     Inserir:</br></br>
                     <from action="inserirCorrecao.php" method="post">
-                    Correção: <input type="text" name="Icorreção"> <input type="submit" value="Submit"/></br></br>
+                    Correcao: <input type="text" name="Icorrecao"> <input type="submit" value="Submit"/></br></br>
                     </form>
                     <from action="inserirPcorrecao.php" method="post">
-                    Proposta de correção:  <input type="text" name="IPcorreção"> <input type="submit" value="Submit"/></br></br>
+                    Proposta de correção:  <input type="text" name="IPcorrecao"> <input type="submit" value="Submit"/></br></br>
                     </form>
                 </div>
                 <div class="grid2-remover">
                     Remover:</br></br>
                     <from action="removerCorrecao.php" method="post">
-                    Correção: <input type="text" name="Rcorreção"> <input type="submit" value="Submit"/></br></br>
+                    Correção: <input type="text" name="Rcorrecao"> <input type="submit" value="Submit"/></br></br>
                     </form>
                     <from action="removerPcorrecao.php" method="post">
-                    Proposta de correção:  <input type="text" name="RPcorreção"> <input type="submit" value="Submit"/></br></br>
+                    Proposta de correção:  <input type="text" name="RPcorrecao"> <input type="submit" value="Submit"/></br></br>
                     </form>
                 </div>
                 <div class="grid2-editar">
                     Editar:</br></br>
                     <from action="editarPcorrecao.php" method="post">
-                    Proposta de correção:  <input type="text" name="EPcorreção"> <input type="submit" value="Submit"/></br></br>
+                    Proposta de correcao:  <input type="text" name="EPcorrecao"> <input type="submit" value="Submit"/></br></br>
                     </form>
                 </div>
             </div>
@@ -64,23 +64,23 @@
             <input type="submit" value="Submit"/>
             </form>
         </br></br></br>
-        <p4>-> Registar incidências e duplicados</br></br></p4>
+        <p4>-> Registar incidencias e duplicados</br></br></p4>
             <from action="inserirIncidencia.php" method="post">
-            Incidência: <input type="text" name="Iincidência"> <input type="submit" value="Submit"/></br></br>
+            Incidência: <input type="text" name="Iincidencia"> <input type="submit" value="Submit"/></br></br>
             </form>
             <from action="inserirDuplicado.php" method="post">
             Duplicado: <input type="text" name="Iduplicado"> <input type="submit" value="Submit"/>
             </form>
         </br></br></br>
-        <p5>-> Listar todas as anomalias de incidências registadas na área compreendida entre dois locais públicos</br></br></p5>
+        <p5>-> Listar todas as anomalias de incidencias registadas na area compreendida entre dois locais publicos</br></br></p5>
             <from action="listarAnomalias_locais.php" method="post">
             Local 1: <input type="text" name="Local1"></br></br>
             Local 2: <input type="text" name="Local2"></br></br>
             <input type="submit" value="Submit"/>
             </form>
         <br><br>
-        <p6>-> Dados (X,Y) com (latitude, longitude) em graus expressos em notação decimal, listar todas as
-            anomalias registadas nos últimos três meses a mais ou menos (dX, dY) graus de (latitude,
+        <p6>-> Dados (X,Y) com (latitude, longitude) em graus expressos em notacao decimal, listar todas as
+            anomalias registadas nos ultimos tres meses a mais ou menos (dX, dY) graus de (latitude,
             longitude)</br></br></p6>
             <from action="listarAnomalias_graus.php" method="post">
             Latitude: <input type="text" name="Latitude"></br></br>
@@ -95,11 +95,11 @@
             display:grid;
         }
         .grid1-inserir{
-            grid-collumn:1;
+            grid-column:1;
             grid-row:1;
         }
         .grid1-remover{
-            grid-collumn:2;
+            grid-column:2;
             grid-row:1;
             padding-right:400px;
         }
@@ -107,15 +107,15 @@
             display:grid;
         }
         .grid2-inserir{
-            grid-collumn:1;
+            grid-column:1;
             grid-row:1;
         }
         .grid2-remover{
-            grid-collumn:2;
+            grid-column:2;
             grid-row:1;
         }
         .grid2-editar{
-            grid-collumn:3;
+            grid-column:3;
             grid-row:1;
         }
     </style>
