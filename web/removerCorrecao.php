@@ -8,6 +8,8 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -16,10 +18,8 @@
 
         list($email, $numero, $anomalia_id) = explode(",", $input); 
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "DELETE FROM correcao WHERE :email AND :nro AND :anomalia_id;";
+        $sql = "DELETE FROM correcao WHERE email=:email AND nro=:nro AND anomalia_id=:anomalia_id;";
 
         $result = $db->prepare($sql);
         $result->execute([':email' => $email, ':nro' => $numero, ':anomalia_id' => $anomalia_id]);

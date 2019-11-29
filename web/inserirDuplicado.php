@@ -8,6 +8,8 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -16,10 +18,8 @@
 
         list($item1, $item2) = explode(",", $input);
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO duplicado VALUES (:item1, :item2);";
+        $sql = "INSERT INTO duplicado VALUES (item1=:item1, item2=:item2);";
 
         $result = $db->prepare($sql);
         $result->execute([':item1' => $item1, ':item2' => $item2]);
