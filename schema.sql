@@ -86,11 +86,11 @@ create table incidencia (
     email varchar(254),
 
     primary key (anomalia_id),
-      foreign key(anomalia_id)
+    foreign key(anomalia_id)
         references anomalia(id),
-      foreign key(item_id)
+    foreign key(item_id)
         references item(id),
-      foreign key(email)
+    foreign key(email)
         references utilizador(email));
 
 create table proposta_de_correcao(
@@ -117,6 +117,3 @@ create table correcao(
         references incidencia(anomalia_id));
 
 
-INSERT INTO local_publico values ('praceta visconde de oliveira do douro', 123, 4430);
-INSERT INTO local_publico values ('vila nova de gaia', 456, 4400);
-SELECT * from local_publico;
