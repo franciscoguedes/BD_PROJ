@@ -41,9 +41,8 @@ from (
     anomalia on incidencia.anomalia_id = anomalia.id
     join
     item on item.id = incidencia.item_id
-    ) tbl
-where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
-    and latitude > 39.336775
+    ) table1
+where ts between '2019-01-01 00:00:00' and '2019-12-31 23:59:59' and latitude > 39.336775
     and not exists(
         select latitude, longitude
         from local_publico
@@ -54,16 +53,15 @@ where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
             incidencia
             join
             item on item.id = incidencia.item_id
-            ) t           
+            ) table2           
         where latitude > 39.336775
-        and
-        tbl.email = t.email
+        and table1.email = table2.email
     );
     
     
 select distinct email
 from (
-    utilizador_qualificado
+    utilizador_certificado
     natural join
     proposta_de_correcao
     natural join
@@ -72,9 +70,8 @@ from (
     anomalia on incidencia.anomalia_id = anomalia.id
     join
     item on item.id = incidencia.item_id
-    ) tbl
-where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
-    and latitude < 39.336775
+    ) table1
+where ts between '2019-01-01 00:00:00' and '2019-12-31 23:59:59' and latitude < 39.336775
     and exists(
         select anomalia_id
         from incidencia
@@ -83,17 +80,16 @@ where ts between '2019-01-01 00:00:00' and '2020-01-01 00:00:00'
         except
         select anomalia_id
         from(
-            utilizador_qualificado
+            utilizador_certificado
             natural join
             proposta_de_correcao
             natural join
             incidencia
             join
             anomalia on incidencia.anomalia_id = anomalia.id
-        ) t
+        ) table2
         where latitude < 39.336775
-        and
-        tbl.email = t.email
+        and table1.email = table2.email
     );
 
   
