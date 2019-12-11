@@ -63,7 +63,7 @@ create table duplicado(
 
 create table utilizador(
     email varchar(254),
-    pass varchar(80) not null, 
+    pass varchar(80) not null,
     primary key(email));
 
 
@@ -115,3 +115,83 @@ create table correcao(
         references incidencia(anomalia_id));
 
 
+--R-1  A zona da anomalia_tradução não se pode sobrepor à zona da anomalia correspondente
+CREATE OR REPLACE FUNCTION check_zona_sobreposta()
+RETURNS TRIGGER
+AS $$
+BEGIN
+  IF EXISTS(SELECT * FROM anomalia WHERE anomalia.id = NEW.id AND anomalia.zona != NEW.zona) THEN
+    INSERT INTO anomalia_traducao;
+    VALUES (NEW.id, NEW.zona2, NEW.lingua2);
+  ELSE
+    RAISE EXCEPTION	'Anomalia sobreposta	%',	NEW.id
+    USING HINT	=	'Please	get your shit together.';
+
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_zona_sobreposta BEFORE INSERT ON anomalia_traducao
+FOR EACH ROW EXECUTE PROCEDURE check_zona_sobreposta();
+
+--R-4 email de utilizador tem de figurar em utilizador_qualificado ou utilizador_regular
+CREATE OR REPLACE FUNCTION check_utilizador()
+RETURNS TRIGGER
+AS $$
+BEGIN
+  IF (EXISTS ((SELECT * FROM utilizador_regular WHERE NEW.email = utilizador_regular.email)
+          OR (SELECT * FROM utilizador_certificado WHERE NEW.email = utilizador_certificado.email))) THEN
+  --IF NEW.email = utilizador_certificado OR NEW.email = utilizador_regular THEN
+    INSERT INTO utilizador;
+    VALUES(NEW.email, NEW.password);
+  ELSE
+    RAISE EXCEPTION 'O email do utilizador nao consta nas devidas tabelas';
+    USING HINT	=	'Please	get your shit together.';
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_utilizador BEFORE INSERT ON utilizador
+FOR ECH ROW EXECUTE PROCEDURE check_utilizador();
+
+-- R-5 email não pode figurar em utilizador_regular
+CREATE OR REPLACE FUNCTION check_utilizador_certificado()
+RETURNS TRIGGER
+AS $$
+  IF (NOT EXISTS (SELECT * FROM utilizador_regular WHERE NEW.email = utilizador_regular.email)) THEN
+    INSERT INTO utilizador_certificado;
+    VALUES (NEW.email);
+  ELSE
+    RAISE EXCEPTION 'O utilizador qualificado nao pode estar na tabela de utilizador regular';
+    USING HINT = 'Please get your shit together.';
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_utilizador_certificado BEFORE INSERT ON utilizador_certificado
+FOR EACH ROW EXECUTE PROCEDURE check_utilizador_certificado();
+
+--R-6
+CREATE OR REPLACE FUNCTION check_utilizador_regular()
+RETURNS TRIGGER
+AS $$
+  IF (NOT EXISTS (SELECT * FROM utilizador_certificado WHERE NEW.email = utilizador_certificado.email)) THEN
+    INSERT INTO utilizador_regular;
+    VALUES (NEW.email);
+  ELSE
+    RAISE EXCEPTION 'O utilizador regular nao pode estar na tabela de utilizador certificado';
+    USING HINT = 'Please	get your shit together.';
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_utilizador_regular BEFORE INSERT ON utilizador_regular
+FOR EACH ROW EXECUTE PROCEDURE check_utilizador_regular();
