@@ -40,7 +40,7 @@ create table f_anomalia(
     id_tempo,
     id_local,
     id_lingua),
-    foreign key(i   d_utilizador)
+    foreign key(id_utilizador)
         references d_utilizador(id_utilizador),
     
     foreign key(id_tempo)
