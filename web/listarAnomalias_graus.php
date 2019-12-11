@@ -8,6 +8,8 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -21,12 +23,10 @@
         $maxlongitude = $longitude + $y;
         $minlongitude = $longitude - $y;
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
         $sql = "SELECT anomalia_id, zona, imagem, lingua, ts, descrição, tem_anomalia_redação FROM (anomalia JOIN incidencia on anomalia.id = incidencia.anomalia_id)tabel1 JOIN 
             item on tabel1.item_id = item.id)tabel2 NATURAL JOIN local_publico)final WHERE final.ts > CURRENT_TIMESTAMP - INTERVAL '3 months' AND
-            final.latitude BETWEEN :minlatitude AND :maxlatitude AND final.longitude BETWEEN :minlongitude AND :maxlongitude;";
+            final.latitude BETWEEN minlatitude=:minlatitude AND maxlatitude=:maxlatitude AND final.longitude BETWEEN minlongitude=:minlongitude AND maxlongitude=:maxlongitude;";
     
         $result = $db->prepare($sql);
         $result->execute([':minlatitude' => $minlatitude, ':maxlatitude' => $maxlatitude, ':minlongitude' => $minlongitude, ':maxlongitude' => $maxlongitude]);
@@ -41,8 +41,8 @@
             echo("<td>{$row['imagem']}</td>\n");
             echo("<td>{$row['lingua']}</td>\n");
             echo("<td>{$row['ts']}</td>\n");
-            echo("<td>{$row['descrição']}</td>\n");
-            echo("<td>{$row['tem_anomalia_redação']}</td>\n");
+            echo("<td>{$row['descricao']}</td>\n");
+            echo("<td>{$row['tem_anomalia_redacao']}</td>\n");
             echo("</tr>\n");
         }
         echo("</table>\n");

@@ -8,18 +8,18 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $input = $_REQUEST['RPcorreção'];
+        $input = $_REQUEST['RPcorrecao'];
 
         list($email, $numero) = explode(",", $input);
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "DELETE FROM proposta_de_correcao WHERE :email AND :nro;";
+        $sql = "DELETE FROM proposta_de_correcao WHERE email=:email AND nro=:nro;";
         
 
         $result = $db->prepare($sql);

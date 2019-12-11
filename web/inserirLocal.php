@@ -8,6 +8,8 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+        
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -16,10 +18,8 @@
 
         list($latitude, $longitude, $nome) = explode(",", $input); 
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO local_publico VALUES (:latitude, :longitude, :nome);";
+        $sql = "INSERT INTO local_publico VALUES (latitude=:latitude, longitude=:longitude, nome=:nome);";
 
         $result = $db->prepare($sql);
         $result->execute([':latitude' => $latitude, ':longitude' => $longitude, ':nome' => $nome]);

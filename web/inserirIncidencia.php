@@ -8,18 +8,18 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $input = $_REQUEST['Iincidência'];
+        $input = $_REQUEST['Iincidencia'];
 
         list($anomalia_id, $item_id, $email) = explode(",", $input); 
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO incidencia  VALUES (:anomalia_id, :item_id, :email);";
+        $sql = "INSERT INTO incidencia  VALUES (anomalia_id=:anomalia_id, item_id=:item_id, email=:email);";
 
 
         $result = $db->prepare($sql);

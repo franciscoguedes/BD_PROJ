@@ -7,13 +7,12 @@
         $user ="ist190716";
         $password = "dfud2820";
         $dbname = $user;
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
 
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
         $sql = "SELECT * FROM utilizador;";
     

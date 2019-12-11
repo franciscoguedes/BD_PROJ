@@ -8,16 +8,16 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $input = $_REQUEST['Ranomalia'];
 
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "DELETE FROM anomalia WHERE :id;";
+        $sql = "DELETE FROM anomalia WHERE id=:id;";
     
         $result = $db->prepare($sql);
         $result->execute([':id' => $input]);

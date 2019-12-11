@@ -8,18 +8,18 @@
         $password = "dfud2820";
         $dbname = $user;
 
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $input = $_REQUEST['Icorreção'];
+        $input = $_REQUEST['Icorrecao'];
 
         list($email, $numero, $anomalia_id) = explode(",", $input); 
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO correcao VALUES (:email, :nro, :anomalia_id);";
+        $sql = "INSERT INTO correcao VALUES (email=:email, nro=:nro, anomalia_id=:anomalia_id);";
     
         $result = $db->prepare($sql);
         $result->execute([':email' => $email, ':nro' => $numero, ':anomalia_id' => $anomalia_id]);

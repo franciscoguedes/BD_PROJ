@@ -7,6 +7,9 @@
         $user ="ist190716";
         $password = "dfud2820";
         $dbname = $user;
+
+        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
+
         $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -15,10 +18,8 @@
 
         list($latitude, $longitude) = explode(",", $input);
     
-        $db = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "DELETE FROM local_publico WHERE :latitude AND :longitude;";
+        $sql = "DELETE FROM local_publico WHERE latitude=:latitude AND longitude=:longitude;";
 
         $result = $db->prepare($sql);
         $result->execute([':latitude' => $latitude, ':longitude' => $longitude]);
