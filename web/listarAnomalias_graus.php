@@ -24,7 +24,7 @@
         $minlongitude = $longitude - $y;
     
     
-        $sql = "SELECT anomalia_id, zona, imagem, lingua, ts, descrição, tem_anomalia_redação FROM (anomalia JOIN incidencia on anomalia.id = incidencia.anomalia_id)tabel1 JOIN 
+        $sql = "SELECT anomalia_id, zona, imagem, lingua, ts, descrição, tem_anomalia_redação FROM (((anomalia JOIN incidencia on anomalia.id = incidencia.anomalia_id)tabel1 JOIN 
             item on tabel1.item_id = item.id)tabel2 NATURAL JOIN local_publico)final WHERE final.ts > CURRENT_TIMESTAMP - INTERVAL '3 months' AND
             final.latitude BETWEEN minlatitude=:minlatitude AND maxlatitude=:maxlatitude AND final.longitude BETWEEN minlongitude=:minlongitude AND maxlongitude=:maxlongitude;";
     
