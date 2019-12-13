@@ -1,5 +1,3 @@
-
-
 --R-1  A zona da anomalia_tradução não se pode sobrepor à zona da anomalia correspondente
 CREATE OR REPLACE FUNCTION check_zona_sobreposta()
 RETURNS TRIGGER
@@ -15,7 +13,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER check_zona_sobreposta AFTER INSERT ON anomalia_traducao
+CREATE TRIGGER check_zona_sobreposta BEFORE INSERT OR UPDATE ON anomalia_traducao
 FOR EACH ROW EXECUTE PROCEDURE check_zona_sobreposta();
 
 --R-4 email de utilizador tem de figurar em utilizador_qualificado ou utilizador_regular
@@ -28,7 +26,7 @@ BEGIN
   --IF NEW.email = utilizador_certificado OR NEW.email = utilizador_regular THEN
     RAISE EXCEPTION 'O email do utilizador nao consta nas devidas tabelas %', NEW.email
     USING HINT	=	'Please	get your shit together.';
-    
+
   END IF;
 
   RETURN NEW;
@@ -71,3 +69,4 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER check_utilizador_regular AFTER INSERT ON utilizador_regular
 FOR EACH ROW EXECUTE PROCEDURE check_utilizador_regular();
+
